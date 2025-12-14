@@ -1,0 +1,11 @@
+# Core dependencies
+openai>=1.0.0
+python-dotenv>=1.0.0
+pyyaml>=6.0
+
+# CLI interface
+rich>=13.0.0
+
+# Telegram interface
+python-telegram-bot>=20.0
+
