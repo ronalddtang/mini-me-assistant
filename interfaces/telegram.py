@@ -1,4 +1,5 @@
 import os
+import asyncio
 import logging
 from pathlib import Path
 from dotenv import load_dotenv
@@ -50,12 +51,20 @@ async def handle_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE
         await update.message.reply_text("Please send me a message with some text.")
         return
     
+    # Use main assistant agent (since you're the only user)
+    # For future multi-agent support, you could route based on command or context
+    agent_id = "main_assistant"
+    
     # Show typing indicator
     await context.bot.send_chat_action(chat_id=update.effective_chat.id, action="typing")
     
     try:
-        # Process the message using the assistant
-        result = handle_message(user_text)
+        # Process the message using the assistant with agent-specific memory.
+        # Run in a thread executor so we don't block the event loop or mix sync/async calls.
+        loop = asyncio.get_running_loop()
+        result = await loop.run_in_executor(
+            None, handle_message, user_text, agent_id
+        )
         reply = result.get('reply', '')
         
         if not reply:
@@ -100,4 +109,3 @@ def run_telegram_bot():
     # Start the bot
     logger.info("Starting Telegram bot...")
     application.run_polling(allowed_updates=Update.ALL_TYPES)
-
