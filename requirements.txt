@@ -1,0 +1,7 @@
+python-dotenv>=1.0.0
+openai>=1.0.0
+memori>=3.1.0
+SQLAlchemy>=2.0.0
+python-telegram-bot>=20.0
+rich>=13.0.0
+requests>=2.31.0
